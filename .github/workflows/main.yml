@@ -18,6 +18,7 @@ jobs:
 
 
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -49,6 +50,12 @@ jobs:
         uses: actions/download-artifact@v4
         with: 
           name: jar-files
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/build
+          key: gradle-files
         
       - name: Deploy
         run: ./gradlew build
