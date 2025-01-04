@@ -24,8 +24,16 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout Repo
-      #   uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Cache workspace 
+        uses: actions/cache@v3 
+        with: 
+          path: ${{ github.workspace }} 
+          key: ${{ runner.os }}-workspace-${{ hashFiles('**/*') }} 
+          restore-keys: | 
+            ${{ runner.os }}-workspace-
 
       - name: Build
         run: ./gradlew build
@@ -48,11 +56,13 @@ jobs:
         with: 
           name: jar-files
 
-      - name: Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/build
-          key: gradle-files
+      - name: Cache workspace 
+        uses: actions/cache@v3 
+        with: 
+          path: ${{ github.workspace }} 
+          key: ${{ runner.os }}-workspace-${{ hashFiles('**/*') }} 
+          restore-keys: | 
+            ${{ runner.os }}-workspace-
         
       - name: Deploy
-        run: ./gradlew build
+        run: tree
