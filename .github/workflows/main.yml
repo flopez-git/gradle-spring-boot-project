@@ -7,11 +7,14 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-      - name: Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/build
-          key: gradle-files
+
+      - name: Cache workspace 
+        uses: actions/cache@v3 
+        with: 
+          path: ${{ github.workspace }} 
+          key: ${{ runner.os }}-workspace-${{ hashFiles('**/*') }} 
+          restore-keys: | 
+            ${{ runner.os }}-workspace-
 
       - name: Test
         run: ./gradlew test
@@ -21,15 +24,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      # - name: Checkout Repo
+      #   uses: actions/checkout@v3
 
-      - name: Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/build
-          key: gradle-files
-          
       - name: Build
         run: ./gradlew build
         
