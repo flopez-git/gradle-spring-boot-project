@@ -2,17 +2,16 @@ name: CI
 on: workflow_dispatch
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repo
+  #       uses: actions/checkout@v3
 
-      - name: Test
-        run: ./gradlew test
+  #     - name: Test
+  #       run: ./gradlew test
 
   build:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -22,10 +21,10 @@ jobs:
         run: ./gradlew build
         
       - name: Build
-        run: ls -lrt
+        run: tree
 
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifacts@v3
-      #   with:
-      #     name: jar-files
-      #     path:
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          name: jar-files
+          path: build
